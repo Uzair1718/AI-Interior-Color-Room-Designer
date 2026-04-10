@@ -50,22 +50,22 @@ export const CameraCapture: React.FC<CameraCaptureProps> = ({ onCapture }) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            className="p-10 lg:p-14 relative z-10"
+            className="p-6 md:p-10 lg:p-14 relative z-10"
           >
             <div
               {...getRootProps()}
-              className={`border-2 border-dashed rounded-[2rem] p-16 text-center transition-all duration-300 cursor-pointer relative overflow-hidden group ${
+              className={`border-2 border-dashed rounded-[2rem] p-8 md:p-16 text-center transition-all duration-300 cursor-pointer relative overflow-hidden group ${
                 isDragActive ? 'border-primary bg-primary/5 scale-[1.02]' : 'border-border/60 hover:border-primary/50 hover:bg-background/40 hover:shadow-[0_0_40px_rgba(250,89,105,0.05)]'
               }`}
             >
               <input {...getInputProps()} />
               <div className="flex flex-col items-center justify-center gap-6 text-muted-foreground relative z-10">
-                <div className="w-16 h-16 bg-background rounded-2xl shadow-xl flex items-center justify-center border border-border/50 group-hover:scale-110 transition-transform duration-500">
+                <div className="w-16 h-16 bg-background rounded-2xl shadow-xl flex items-center justify-center border border-border/50 group-hover:scale-110 transition-transform duration-500 shrink-0">
                   <ImageUp className="w-7 h-7 text-primary" />
                 </div>
                 <div>
                   <p className="text-xl font-bold text-foreground mb-2">Upload Interior Image</p>
-                  <p className="text-sm font-medium opacity-80">Drag & drop your photo, or <span className="text-primary cursor-pointer hover:underline">browse files</span></p>
+                  <p className="text-sm font-medium opacity-80 px-2 lg:px-0">Drag & drop your photo, or <span className="text-primary cursor-pointer hover:underline">browse files</span></p>
                 </div>
               </div>
             </div>

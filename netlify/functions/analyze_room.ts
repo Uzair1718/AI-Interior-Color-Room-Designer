@@ -15,10 +15,15 @@ export const handler: Handler = async (event) => {
       return { statusCode: 400, body: JSON.stringify({ error: 'Image is required' }) };
     }
 
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-pro' });
+    const model = genAI.getGenerativeModel({ 
+      model: 'gemini-2.5-flash',
+      generationConfig: {
+        responseMimeType: "application/json",
+      }
+    });
 
     const prompt = `
-Analyze this room image in detail and return structured JSON:
+Analyze this room image in detail and return valid JSON adhering strictly to this structure:
 
 {
 "room_type": "",
@@ -37,13 +42,7 @@ Analyze this room image in detail and return structured JSON:
 "recommendations": []
 }
 
-Instructions:
-* Be highly accurate and visually aware
-* Suggest modern, aesthetic, and realistic color schemes
-* Consider lighting and room size
-* Keep suggestions practical for real homes
-* ONLY return valid JSON without markdown wrapping like \`\`\`json
-`;
+Ensure the output is 100% valid JSON. Do not include markdown codeblocks.`;
 
     const result = await model.generateContent([
       prompt,
@@ -56,10 +55,9 @@ Instructions:
     ]);
 
     const responseText = result.response.text();
-    // Try parsing the json safely
+    // Safety check just in case Gemini ignored mimeType
     let jsonMatch = responseText;
-    if (responseText.includes('\`\`\`')) {
-      // Extract from markdown block if gemini hallucinated
+    if (responseText.includes('```')) {
       jsonMatch = responseText.replace(/```(?:json)?/g, '').trim();
     }
     
