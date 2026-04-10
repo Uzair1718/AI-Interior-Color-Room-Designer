@@ -1,22 +1,37 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { CameraCapture } from '@/components/CameraCapture';
 import { ResultsDashboard } from '@/components/ResultsDashboard';
 import type { AnalysisResult } from '@/components/ResultsDashboard';
-import { Sparkles, Loader2 } from 'lucide-react';
+import { Sparkles, Loader2, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 function App() {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [analysis, setAnalysis] = useState<AnalysisResult | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [loadingText, setLoadingText] = useState('Analyzing your room...');
+
+  useEffect(() => {
+    if (!isLoading) return;
+    const texts = [
+      'Scanning architectural layout...',
+      'Analyzing lighting and style...',
+      'Curating elegant color palettes...',
+      'Finalizing design recommendations...',
+    ];
+    let step = 0;
+    const interval = setInterval(() => {
+      step = (step + 1) % texts.length;
+      setLoadingText(texts[step]);
+    }, 2500);
+    return () => clearInterval(interval);
+  }, [isLoading]);
 
   const handleCapture = async (src: string) => {
     setImageSrc(src);
     setIsLoading(true);
 
     try {
-      // In development, you might be running netlify dev. 
-      // Replace this with your actual Netlify function URL if different.
       const response = await fetch('/.netlify/functions/analyze_room', {
         method: 'POST',
         headers: {
@@ -46,67 +61,62 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground font-sans selection:bg-primary/30">
-      <header className="border-b border-border bg-card/50 backdrop-blur-md sticky top-0 z-50">
+    <div className="min-h-screen bg-background text-foreground font-sans selection:bg-primary/30 relative overflow-hidden">
+      {/* Background ambient gradients */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] opacity-20 pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary blur-[100px] rounded-full mix-blend-screen" />
+      </div>
+
+      <header className="fixed top-0 inset-x-0 border-b border-border/40 bg-background/60 backdrop-blur-xl z-50 transition-all duration-300">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <img src="/logo.png" alt="LuminaDesign" className="w-10 h-10 rounded-xl shadow-[0_0_15px_rgba(102,252,241,0.2)]" />
-            <div>
-              <h1 className="text-xl font-bold tracking-tight">Lumina<span className="text-primary">Design</span></h1>
-              <p className="text-xs text-muted-foreground hidden sm:block">AI Interior & Color Architecture</p>
-            </div>
+            <img src="/logo.png" alt="LuminaDesign" className="w-10 h-10 rounded-xl shadow-[0_0_20px_rgba(250,89,105,0.2)]" />
+            <h1 className="text-xl font-bold tracking-tight text-foreground">
+              Lumina<span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">Design</span>
+            </h1>
           </div>
-          <a href="#" className="hidden sm:flex text-sm text-textMain hover:text-primary transition-colors items-center gap-2">
-            <Sparkles className="w-4 h-4" />
-            Try Pre-made Styles
-          </a>
+          <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-muted-foreground">
+            <a href="#" className="hover:text-foreground transition-colors">How it works</a>
+            <a href="#" className="hover:text-foreground transition-colors">Styles</a>
+            <a href="#" className="hover:text-foreground transition-colors">Pro Settings</a>
+            <button className="flex items-center gap-2 bg-foreground text-background px-5 py-2.5 rounded-full hover:bg-foreground/90 transition-all font-semibold active:scale-95 shadow-lg shadow-black/10">
+              Start Free
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </nav>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-6 py-12">
+      <main className="max-w-7xl mx-auto px-6 pt-32 pb-24 relative z-10">
         <AnimatePresence mode="wait">
           {!imageSrc && !isLoading && (
             <motion.div 
               key="hero"
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              className="text-center py-16"
+              exit={{ opacity: 0, y: -20, scale: 0.98 }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              className="text-center py-12 lg:py-24"
             >
-              <h2 className="text-5xl md:text-6xl font-extrabold tracking-tight mb-6">
-                Redefine Your Space <br className="hidden md:block" />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
-                  Intelligently.
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-8 shadow-[0_0_20px_rgba(250,89,105,0.1)]">
+                <Sparkles className="w-4 h-4" />
+                <span>Next-Gen AI Interior Intelligence</span>
+              </div>
+              <h2 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-8 leading-[1.1]">
+                Design Your Room <br className="hidden md:block" />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-indigo-600 to-secondary animate-gradient-x">
+                  With Precision AI.
                 </span>
               </h2>
-              <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-12">
-                Upload a photo of your room to receive bespoke color palettes, layout recommendations, and a complete design breakdown powered by advanced AI.
+              <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-16 leading-relaxed font-light">
+                Instantly visualize perfect color schemes, architectural styles, and hyper-realistic aesthetic upgrades completely powered by intelligent automation.
               </p>
               
-              <CameraCapture onCapture={handleCapture} />
-              
-              <div className="mt-24 grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div className="p-6 rounded-2xl bg-card border border-border">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4 mx-auto">
-                    <span className="text-2xl">📸</span>
-                  </div>
-                  <h3 className="text-lg font-semibold mb-2">1. Snap & Upload</h3>
-                  <p className="text-muted-foreground text-sm">Take a wide-angle shot of any room in your house.</p>
-                </div>
-                <div className="p-6 rounded-2xl bg-card border border-border">
-                  <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center mb-4 mx-auto">
-                    <span className="text-2xl">🧠</span>
-                  </div>
-                  <h3 className="text-lg font-semibold mb-2">2. AI Analysis</h3>
-                  <p className="text-muted-foreground text-sm">Our Gemini model extracts structural & lighting details instantly.</p>
-                </div>
-                <div className="p-6 rounded-2xl bg-card border border-border">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4 mx-auto">
-                    <span className="text-2xl">🎨</span>
-                  </div>
-                  <h3 className="text-lg font-semibold mb-2">3. Curated Colors</h3>
-                  <p className="text-muted-foreground text-sm">Receive architectural-grade color schemes tailored for the space.</p>
-                </div>
+              <div className="relative max-w-3xl mx-auto">
+                 <div className="absolute -inset-1 bg-gradient-to-r from-primary to-secondary rounded-3xl blur opacity-25 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
+                 <div className="relative">
+                   <CameraCapture onCapture={handleCapture} />
+                 </div>
               </div>
             </motion.div>
           )}
@@ -114,25 +124,45 @@ function App() {
           {isLoading && (
             <motion.div 
               key="loading"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="flex flex-col items-center justify-center py-32"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 1.05 }}
+              className="flex flex-col items-center justify-center py-40 max-w-lg mx-auto w-full"
             >
-              <div className="relative">
-                <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full animate-pulse blur-3xl"></div>
-                <Loader2 className="w-16 h-16 text-primary animate-spin relative z-10" />
+              <div className="relative mb-12">
+                <div className="absolute inset-0 bg-primary/30 blur-[40px] rounded-full animate-pulse"></div>
+                <Loader2 className="w-20 h-20 text-primary animate-spin relative z-10" />
               </div>
-              <h3 className="text-2xl font-semibold mt-8 mb-2">Analyzing Architecture & Lighting</h3>
-              <p className="text-muted-foreground animate-pulse">Extracting color schemes and design patterns...</p>
+              
+              <AnimatePresence mode="wait">
+                <motion.h3 
+                  key={loadingText}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="text-2xl font-semibold mb-8 text-center text-foreground"
+                >
+                  {loadingText}
+                </motion.h3>
+              </AnimatePresence>
+
+              <div className="w-full bg-border rounded-full h-1.5 mb-4 overflow-hidden">
+                <div className="bg-gradient-to-r from-primary to-secondary h-1.5 rounded-full animate-[progress_2s_ease-in-out_infinite]" style={{ width: '50%' }}></div>
+              </div>
+              <div className="grid grid-cols-3 gap-4 w-full opacity-40">
+                <div className="h-2 rounded bg-border animate-pulse"></div>
+                <div className="h-2 rounded bg-border animate-pulse delay-75"></div>
+                <div className="h-2 rounded bg-border animate-pulse delay-150"></div>
+              </div>
             </motion.div>
           )}
 
           {imageSrc && analysis && !isLoading && (
             <motion.div
               key="results"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              initial={{ opacity: 0, scale: 0.98, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
             >
                <ResultsDashboard 
                   imageSrc={imageSrc} 
