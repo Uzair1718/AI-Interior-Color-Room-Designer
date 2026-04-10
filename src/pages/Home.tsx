@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { CameraCapture } from '@/components/CameraCapture';
 import { ResultsDashboard } from '@/components/ResultsDashboard';
 import type { AnalysisResult } from '@/components/ResultsDashboard';
-import { Sparkles, Loader2, Zap, Palette, Brush, CheckCircle2 } from 'lucide-react';
+import { Sparkles, Loader2, Zap, Palette, Brush } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export const Home = () => {

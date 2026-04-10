@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Settings, Sliders, Zap, Lock, Save, Moon, Sun, Monitor, AlertCircle } from 'lucide-react';
+import { Settings, Sliders, Zap, Save, Moon, Sun, Monitor, AlertCircle } from 'lucide-react';
 
 export const ProSettings = () => {
   const [intensity, setIntensity] = useState(50);
