@@ -50,9 +50,7 @@ function App() {
       <header className="border-b border-border bg-card/50 backdrop-blur-md sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-primary/20 rounded-xl flex items-center justify-center border border-primary/30 shadow-[0_0_15px_rgba(102,252,241,0.2)]">
-              <PaintBucket className="w-6 h-6 text-primary" />
-            </div>
+            <img src="/logo.png" alt="LuminaDesign" className="w-10 h-10 rounded-xl shadow-[0_0_15px_rgba(102,252,241,0.2)]" />
             <div>
               <h1 className="text-xl font-bold tracking-tight">Lumina<span className="text-primary">Design</span></h1>
               <p className="text-xs text-muted-foreground hidden sm:block">AI Interior & Color Architecture</p>
