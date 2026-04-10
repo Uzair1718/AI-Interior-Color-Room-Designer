@@ -38,13 +38,16 @@ export const Home = () => {
         body: JSON.stringify({ imageBase64: src }),
       });
 
-      if (!response.ok) throw new Error('Failed to analyze image');
+      if (!response.ok) {
+        const errText = await response.text().catch(() => 'No response body');
+        throw new Error(`HTTP ${response.status}: ${errText}`);
+      }
       
       const data = await response.json();
       setAnalysis(data);
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      alert('Error analyzing room. Please try again.');
+      alert(`Error analyzing room: ${error.message} (Are you running locally without netlify dev?)`);
       setImageSrc(null);
     } finally {
       setIsLoading(false);

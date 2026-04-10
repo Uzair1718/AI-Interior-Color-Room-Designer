@@ -73,7 +73,7 @@ Ensure the output is 100% valid JSON. Do not include markdown codeblocks.`;
     console.error('Error analyzing image:', error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'Failed to analyze image' })
+      body: JSON.stringify({ error: 'Failed to analyze image', details: error.message || String(error) })
     };
   }
 };
