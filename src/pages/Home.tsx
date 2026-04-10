@@ -84,11 +84,38 @@ export const Home = () => {
                 Instantly visualize perfect color schemes, architectural styles, and hyper-realistic aesthetic upgrades directly inside your browser. No software required.
               </p>
               
-              <div className="relative max-w-3xl mx-auto mb-12">
-                 <div className="absolute -inset-1 bg-gradient-to-r from-primary to-secondary rounded-3xl blur opacity-20 pointer-events-none"></div>
+              <div className="relative max-w-3xl mx-auto mb-20 z-20">
+                 <div className="absolute -inset-1 bg-gradient-to-r from-primary to-secondary rounded-[2.5rem] blur-xl opacity-20 pointer-events-none"></div>
                  <div className="relative">
                    <CameraCapture onCapture={handleCapture} />
                  </div>
+              </div>
+
+              {/* Transformation Demonstration */}
+              <div className="max-w-5xl mx-auto mt-24 mb-10 opacity-90 relative z-10">
+                <h3 className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-8">What You Can Expect</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  {/* Before Image */}
+                  <div className="relative rounded-[2rem] overflow-hidden aspect-video shadow-2xl border border-white/10 group cursor-pointer">
+                    <img src="/demo-before.png" alt="Original Room" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                    <div className="absolute top-4 left-4 px-3 py-1 bg-black/60 backdrop-blur-md rounded-full border border-white/10 text-xs font-semibold text-white/90 shadow-lg">
+                      Before: Standard Room
+                    </div>
+                  </div>
+                  {/* After Image */}
+                  <div className="relative rounded-[2rem] overflow-hidden aspect-video shadow-[0_0_50px_rgba(250,89,105,0.15)] border border-primary/30 group cursor-pointer">
+                    <img src="/demo-after.png" alt="AI Redesigned Room" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                    <div className="absolute top-4 left-4 px-3 py-1 bg-primary/80 backdrop-blur-md rounded-full border border-white/20 text-xs font-bold text-white shadow-lg flex items-center gap-2">
+                       <Sparkles className="w-3 h-3" />
+                       After: AI Luxury Rendering
+                    </div>
+                  </div>
+                </div>
+                <div className="mt-8 flex items-center justify-center gap-4">
+                  <div className="h-px bg-border/60 flex-1"></div>
+                  <p className="text-sm text-muted-foreground italic px-4">Actual result mapped dynamically using generative architectural preservation.</p>
+                  <div className="h-px bg-border/60 flex-1"></div>
+                </div>
               </div>
             </motion.div>
           )}
