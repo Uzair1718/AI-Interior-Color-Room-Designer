@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { CameraCapture } from '@/components/CameraCapture';
 import { ResultsDashboard } from '@/components/ResultsDashboard';
 import type { AnalysisResult } from '@/components/ResultsDashboard';
-import { Sparkles, Loader2, PaintBucket } from 'lucide-react';
+import { Sparkles, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 function App() {
